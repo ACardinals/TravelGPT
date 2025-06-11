@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Adjusted User model for NextAuth.js
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique // Email can be optional if using OAuth non-email accounts
+  emailVerified DateTime? // When the email was verified
+  image         String? // Profile image URL
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[] // Relation to Account model
+  sessions Session[] // Relation to Session model
+
+  travelPlans       TravelPlan[] // Existing relation
+  planConversations PlanConversation[] // Relation to plan conversation messages
+}
+
+// NextAuth.js Account model
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? // @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// NextAuth.js Session model
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// NextAuth.js VerificationToken model
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model TravelPlan {
+  id                  String   @id @default(cuid())
+  title               String
+  textContent         String?
+  imageUrl            String?
+  status              String   @default("DRAFT") // e.g., DRAFT, ANALYZING, ANALYZED, FAILED
+  feasibilityScore    Float? // Overall feasibility score
+  reasonablenessScore Float? // Overall reasonableness score
+  analysisDetails     Json? // Detailed analysis for each dimension { dimension: string, score: float, feedback: string }[]
+  suggestions         String? // Overall suggestions for improvement
+  userId              String
+  user                User     @relation(fields: [userId], references: [id])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  conversations PlanConversation[] // Relation to conversation messages
+}
+
+model PlanConversation {
+  id        String   @id @default(cuid())
+  planId    String
+  userId    String
+  role      String // "user" or "assistant"
+  content   String // Removed @db.Text for SQLite compatibility
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  travelPlan TravelPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([planId, createdAt]) // Index for faster querying of conversations for a plan
+}

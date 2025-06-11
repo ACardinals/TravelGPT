@@ -24,7 +24,7 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+body {
     @apply bg-slate-50 text-slate-900; /* 设置柔和的背景和默认文字颜色 */
   }
 }

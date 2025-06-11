@@ -127,3 +127,4 @@ async function testEmbedding() {
 export const EMBEDDING_DIMENSION = 768; // paraphrase-multilingual-mpnet-base-v2 的维度
                                        // 对于 Xenova/all-MiniLM-L6-v2 是 384
 
+ 
