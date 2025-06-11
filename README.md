@@ -18,7 +18,7 @@ An intelligent full-stack application designed to revolutionize travel planning.
 -   **Intuitive Plan Management**: Full CRUD (Create, Read, Update, Delete) capabilities for travel plans.
 -   **AI-Powered Analysis**: One-click analysis of travel plans, providing scores and comprehensive suggestions on feasibility, budget, pacing, and more.
 -   **Conversational AI Assistant**: Engage in a multi-turn dialogue with the AI to dynamically refine and optimize your travel plan.
--   **RAG-Enhanced Knowledge**: The AI assistant leverages a vector database populated with travel insights (e.g., from platforms like 小红书, 微博) to provide context-aware, highly relevant advice.
+-   **RAG-Enhanced Knowledge**: The AI assistant leverages a vector database populated with external travel insights to provide context-aware, highly relevant advice.
 -   **Modern Tech Stack**: Built with Next.js App Router, tRPC, Prisma, and Tailwind CSS for a robust, type-safe, and visually appealing experience.
 
 ---
@@ -50,8 +50,8 @@ graph TD
         J[Vector Database - RAG Knowledge]
     end
     
-    subgraph " crawling "
-     K[Web Scraping Data - 小红书, 微博]
+    subgraph "Data Source"
+     K[External Web Data]
     end
     
 
