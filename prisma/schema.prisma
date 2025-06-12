@@ -7,11 +7,12 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
+  relationMode = "prisma"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // Adjusted User model for NextAuth.js
