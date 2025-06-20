@@ -6,8 +6,6 @@
 
 </div>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 An intelligent full-stack application designed to revolutionize travel planning. Users can submit their travel ideas, and our AI assistant, powered by a Large Language Model (LLM) with a RAG-enhanced knowledge base, provides detailed feasibility analysis, reasonableness scores, and actionable suggestions to perfect the itinerary.
 
 ---
@@ -169,7 +167,3 @@ Contributions are welcome! Please feel free to open an issue or submit a pull re
 5.  Open a Pull Request.
 
 ---
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
